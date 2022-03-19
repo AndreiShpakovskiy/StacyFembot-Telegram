@@ -1,6 +1,6 @@
 package com.bot.stacy.repository.config
 
-interface ConfigRepository {
+interface BotConfigRepository {
     val botToken: String?
     val botUsername: String?
 }
