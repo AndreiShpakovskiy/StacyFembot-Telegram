@@ -3,7 +3,7 @@ package com.bot.stacy.repository.config
 import java.io.IOException
 import java.util.*
 
-class DefaultConfigRepository : ConfigRepository {
+class DefaultBotConfigRepository : BotConfigRepository {
     companion object {
         private const val BOT_PROPERTIES_FILE_NAME = "bot.properties"
         private const val BOT_TOKEN_PROPERTY_NAME = "bot.token"
@@ -18,7 +18,7 @@ class DefaultConfigRepository : ConfigRepository {
 
     private fun getBotProperty(propertyName: String): String? {
         try {
-            DefaultConfigRepository::class.java.classLoader
+            DefaultBotConfigRepository::class.java.classLoader
                 .getResourceAsStream(BOT_PROPERTIES_FILE_NAME).use { inputStream ->
                     val properties = Properties()
                     properties.load(inputStream)
