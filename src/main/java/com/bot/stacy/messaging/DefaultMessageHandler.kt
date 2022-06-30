@@ -5,6 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 
+// mvncompile
+// mvexec:java -Dexec.mainClass=com.bot.stacy.Main
+
 class DefaultMessageHandler(
     private val sender: AbsSender
 ) : MessageHandler {
@@ -13,12 +16,12 @@ class DefaultMessageHandler(
     override fun handleIncomingUpdate(chatUpdate: Update) {
         println("New update: $chatUpdate")
 
-        val messageText = chatUpdate.message.text
+        if (chatUpdate.hasMessage()) {
+            val messageText = chatUpdate.message.text
 
-        if (chatUpdate.hasMessage() && messageText.isNotEmpty()) {
             try {
                 when {
-                    messageText.contains("meme") -> pictureSender.sendMessage(sender, chatUpdate)
+                    messageText?.contains("meme") ?: false -> pictureSender.sendMessage(sender, chatUpdate)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
