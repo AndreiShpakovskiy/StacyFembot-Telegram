@@ -1,6 +1,6 @@
 package com.bot.stacy.repository.memes
 
-import com.bot.stacy.common.MEME_PAGE_LINKS
+import com.bot.stacy.common.MemeSubreddits
 import org.jsoup.Jsoup
 import java.io.InputStream
 import java.net.URL
@@ -8,41 +8,55 @@ import java.util.stream.Collectors
 import kotlin.concurrent.thread
 
 class DefaultMemeRepository : MemeRepository {
-    private val alreadySentMemes = mutableSetOf<String>()
-    private val memeCollection = mutableSetOf<String>()
+    private val memeCollection: MutableMap<String, MutableSet<String>> = mutableMapOf()
 
-    override fun getRandomMeme(pictureListener: (pictureStream: InputStream?) -> Unit) {
+    override fun getRandomMeme(
+        topic: String,
+        sentMemes: Set<String>,
+        pictureListener: (pictureName: String?, pictureStream: InputStream?) -> Unit
+    ) {
+        println("Get meme for topic: $topic")
         thread(start = true) {
             var isCallerSatisfied = false
 
-            pickMemelink()?.let {
-                pictureListener(URL(it).openStream())
-                alreadySentMemes.add(it)
+            pickMemelink(topic, sentMemes)?.let {
+                pictureListener(it, URL(it).openStream())
                 isCallerSatisfied = true
             }
 
-            updateMemeUrls()
+            updateMemeUrls(topic)
 
             if (!isCallerSatisfied) {
-                val nextLink = pickMemelink()
+                val nextLink = pickMemelink(topic, sentMemes)
 
                 if (nextLink != null) {
-                    pictureListener(URL(nextLink).openStream())
-                    alreadySentMemes.add(nextLink)
+                    pictureListener(nextLink, URL(nextLink).openStream())
                 } else {
-                    pictureListener(null)
+                    pictureListener(null, null)
                 }
             }
         }
     }
 
-    private fun updateMemeUrls() {
-        MEME_PAGE_LINKS.forEach {
-            memeCollection.addAll(getPageLinks(it))
+    private fun updateMemeUrls(memeTopic: String) {
+        MemeSubreddits[memeTopic]?.forEach {
+            val pictureLinks = try {
+                getPictureLinks(it)
+            } catch (e: Exception) {
+                emptyList()
+            }
+
+            println("Memes [$memeTopic] -> $pictureLinks")
+
+            if (memeCollection[memeTopic] == null) {
+                memeCollection[memeTopic] = mutableSetOf()
+            }
+
+            memeCollection[memeTopic]?.addAll(pictureLinks)
         }
     }
 
-    private fun getPageLinks(pageUrl: String): List<String> {
+    private fun getPictureLinks(pageUrl: String): List<String> {
         return Jsoup.connect(pageUrl).timeout(10000).get()
             .select("img")
             .stream().filter {
@@ -51,7 +65,8 @@ class DefaultMemeRepository : MemeRepository {
             }.map { it.attr("src") }.collect(Collectors.toList())
     }
 
-    private fun pickMemelink(): String? {
-        return memeCollection.lastOrNull { !alreadySentMemes.contains(it) }
+    private fun pickMemelink(memeTopic: String, sentMemes: Set<String>): String? {
+        println(memeCollection[memeTopic])
+        return memeCollection[memeTopic]?.lastOrNull { !sentMemes.contains(it) }
     }
 }

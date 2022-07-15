@@ -1,6 +1,7 @@
 package com.bot.stacy.messaging
 
-import com.bot.stacy.messaging.taskHandlers.PictureSender
+import com.bot.stacy.common.BotCommand
+import com.bot.stacy.messaging.taskHandlers.DefaultMemeSender
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
@@ -11,7 +12,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 class DefaultMessageHandler(
     private val sender: AbsSender
 ) : MessageHandler {
-    private val pictureSender = PictureSender()
+    private val defaultMemeSender = DefaultMemeSender()
 
     override fun handleIncomingUpdate(chatUpdate: Update) {
         println("New update: $chatUpdate")
@@ -21,7 +22,10 @@ class DefaultMessageHandler(
 
             try {
                 when {
-                    messageText?.contains("meme") ?: false -> pictureSender.sendMessage(sender, chatUpdate)
+                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANY}\\s*", RegexOption.IGNORE_CASE))
+                        ?: false -> defaultMemeSender.send(BotCommand.Meme.ANY, sender, chatUpdate)
+                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANIME}\\s*", RegexOption.IGNORE_CASE))
+                        ?: false -> defaultMemeSender.send(BotCommand.Meme.ANIME, sender, chatUpdate)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
