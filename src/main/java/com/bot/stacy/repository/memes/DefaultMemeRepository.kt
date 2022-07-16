@@ -62,7 +62,9 @@ class DefaultMemeRepository : MemeRepository {
             .stream().filter {
                 it.attr("src").contains("jpg", ignoreCase = true) &&
                         !it.attr("src").contains("style", ignoreCase = true)
-            }.map { it.attr("src") }.collect(Collectors.toList())
+            }.map { it.attr("src") }
+            .filter { !it.contains("external-preview") }
+            .collect(Collectors.toList())
     }
 
     private fun pickMemelink(memeTopic: String, sentMemes: Set<String>): String? {
