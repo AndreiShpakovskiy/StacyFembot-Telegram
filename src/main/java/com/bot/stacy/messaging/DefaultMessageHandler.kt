@@ -10,7 +10,8 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 // mvexec:java -Dexec.mainClass=com.bot.stacy.Main
 
 class DefaultMessageHandler(
-    private val sender: AbsSender
+    private val sender: AbsSender,
+    private val botUsername: String
 ) : MessageHandler {
     private val defaultMemeSender = DefaultMemeSender()
 
@@ -22,9 +23,9 @@ class DefaultMessageHandler(
 
             try {
                 when {
-                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANY}\\s*", RegexOption.IGNORE_CASE))
+                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANY}(@$botUsername)?\\s*", RegexOption.IGNORE_CASE))
                         ?: false -> defaultMemeSender.send(BotCommand.Meme.ANY, sender, chatUpdate)
-                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANIME}\\s*", RegexOption.IGNORE_CASE))
+                    messageText?.matches(Regex("^/?${BotCommand.Meme.ANIME}(@$botUsername)?\\s*", RegexOption.IGNORE_CASE))
                         ?: false -> defaultMemeSender.send(BotCommand.Meme.ANIME, sender, chatUpdate)
                 }
             } catch (e: Exception) {
