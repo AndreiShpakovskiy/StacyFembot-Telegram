@@ -20,8 +20,14 @@ class DefaultMemeRepository : MemeRepository {
             var isCallerSatisfied = false
 
             pickMemelink(topic, sentMemes)?.let {
-                pictureListener(it, URL(it).openStream())
-                isCallerSatisfied = true
+                isCallerSatisfied = try {
+                    pictureListener(it, URL(it).openStream())
+                    true
+                } catch (e: Exception) {
+                    memeCollection[topic] =
+                        memeCollection[topic]?.filter { link -> link != it }?.toMutableSet() ?: mutableSetOf()
+                    false
+                }
             }
 
             updateMemeUrls(topic)
@@ -30,7 +36,12 @@ class DefaultMemeRepository : MemeRepository {
                 val nextLink = pickMemelink(topic, sentMemes)
 
                 if (nextLink != null) {
-                    pictureListener(nextLink, URL(nextLink).openStream())
+                    try {
+                        pictureListener(nextLink, URL(nextLink).openStream())
+                    } catch (e: Exception) {
+                        getRandomMeme(topic, sentMemes, pictureListener)
+                        e.printStackTrace()
+                    }
                 } else {
                     pictureListener(null, null)
                 }
