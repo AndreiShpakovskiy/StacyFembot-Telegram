@@ -7,12 +7,12 @@ import org.telegram.telegrambots.meta.api.objects.Update
 
 class StacyFembot : TelegramLongPollingBot() {
     private val configRepository = DefaultBotConfigRepository()
-    private val defaultMessageHandler = DefaultMessageHandler(this, botUsername ?: "")
+    private val messageHandler = DefaultMessageHandler(this, botUsername)
 
     override fun getBotToken() = configRepository.botToken
     override fun getBotUsername() = configRepository.botUsername
 
     override fun onUpdateReceived(chatUpdate: Update) {
-        defaultMessageHandler.handleIncomingUpdate(chatUpdate)
+        messageHandler.handleIncomingUpdate(chatUpdate)
     }
 }

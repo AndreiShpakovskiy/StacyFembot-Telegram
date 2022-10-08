@@ -10,11 +10,11 @@ class DefaultBotConfigRepository : BotConfigRepository {
         private const val BOT_USERNAME_PROPERTY_NAME = "bot.username"
     }
 
-    override val botToken: String?
-        get() = getBotProperty(BOT_TOKEN_PROPERTY_NAME)
+    override val botToken: String
+        get() = getBotProperty(BOT_TOKEN_PROPERTY_NAME) ?: throw RuntimeException("Bot token can't be null")
 
-    override val botUsername: String?
-        get() = getBotProperty(BOT_USERNAME_PROPERTY_NAME)
+    override val botUsername: String
+        get() = getBotProperty(BOT_USERNAME_PROPERTY_NAME) ?: throw RuntimeException("Bot username can't be null")
 
     private fun getBotProperty(propertyName: String): String? {
         try {
@@ -28,6 +28,6 @@ class DefaultBotConfigRepository : BotConfigRepository {
             ex.printStackTrace()
         }
 
-        return null;
+        return null
     }
 }
