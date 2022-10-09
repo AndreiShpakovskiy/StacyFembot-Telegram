@@ -2,6 +2,6 @@ package com.bot.stacy.bot.command
 
 import com.bot.stacy.model.Command
 
-interface CommandListener {
-    fun onCommand(command: Command)
+interface CommandHandler {
+    fun handleCommand(command: Command)
 }
