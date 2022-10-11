@@ -10,7 +10,7 @@ class MemeCommandHandler(
 
     override fun handleCommand(command: Command) {
         val message = SendMessage()
-        message.text = "Broadcast to ${command.chatId}"
+        message.text = command.command
         message.chatId = "${command.chatId}"
 
         responseMessageObserver.onResponsePrepared(message)

@@ -8,16 +8,21 @@ interface CommandDetector {
 }
 
 class BotCommandDetector(
-    private val botName: String,
+    botName: String,
     private val commandListener: CommandListener
 ) : CommandDetector {
+    private val commandRegex = Regex("^/([a-zA-Z0-9]+)(@$botName)?", RegexOption.IGNORE_CASE)
 
     override fun processMessage(message: Message) {
-        commandListener.onCommand(
-            Command(
-                chatId = message.chatId,
-                command = "new_command".lowercase()
+
+        // If it matches regex, there are 3 groups
+        if (message.hasText() && message.text.matches(commandRegex)) {
+            commandListener.onCommand(
+                Command(
+                    chatId = message.chatId,
+                    command = "${commandRegex.find(message.text)?.groupValues?.get(1)}".lowercase()
+                )
             )
-        )
+        }
     }
 }
