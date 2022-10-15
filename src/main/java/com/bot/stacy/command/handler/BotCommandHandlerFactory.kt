@@ -1,6 +1,6 @@
-package com.bot.stacy.bot.command
+package com.bot.stacy.command.handler
 
-import com.bot.stacy.bot.ResponseMessageObserver
+import com.bot.stacy.ResponseMessageObserver
 import com.bot.stacy.common.CommandName
 import com.bot.stacy.model.Command
 

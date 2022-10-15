@@ -1,16 +1,12 @@
-package com.bot.stacy.bot.command
+package com.bot.stacy.command.detector
 
 import com.bot.stacy.model.Command
 import org.telegram.telegrambots.meta.api.objects.Message
 
-interface CommandDetector {
-    fun processMessage(message: Message)
-}
-
 class BotCommandDetector(
     botName: String,
-    private val commandListener: CommandListener
-) : CommandDetector {
+    commandListener: CommandListener
+) : CommandDetector(commandListener) {
     private val commandRegex = Regex("^/([a-zA-Z0-9]+)(@$botName)?", RegexOption.IGNORE_CASE)
 
     override fun processMessage(message: Message) {

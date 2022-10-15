@@ -1,4 +1,4 @@
-package com.bot.stacy.bot.command
+package com.bot.stacy.command.detector
 
 import com.bot.stacy.model.Command
 

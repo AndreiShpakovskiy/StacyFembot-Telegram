@@ -1,12 +1,20 @@
-package com.bot.stacy.bot
+package com.bot.stacy
 
-import com.bot.stacy.bot.command.*
+import com.bot.stacy.ResponseMessageObserver
+import com.bot.stacy.command.detector.BotCommandDetector
+import com.bot.stacy.command.detector.CommandDetector
+import com.bot.stacy.command.handler.BotCommandHandler
+import com.bot.stacy.command.handler.CommandHandler
+import com.bot.stacy.command.detector.CommandListener
 import com.bot.stacy.model.Command
 import com.bot.stacy.repository.config.BotConfigRepository
 import com.bot.stacy.repository.config.DefaultBotConfigRepository
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage
 import org.telegram.telegrambots.meta.api.objects.Update
+
+// mvncompile
+// mvexec:java -Dexec.mainClass=com.bot.stacy.Main
 
 class StacyFembot(
     private val configRepository: BotConfigRepository = DefaultBotConfigRepository(),

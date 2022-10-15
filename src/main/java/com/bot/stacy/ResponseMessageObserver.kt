@@ -1,4 +1,4 @@
-package com.bot.stacy.bot
+package com.bot.stacy
 
 import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage
 
