@@ -20,7 +20,7 @@ class BotCommandDetector(
             commandListener.onCommand(
                 Command(
                     chatId = message.chatId,
-                    command = "${commandRegex.find(message.text)?.groupValues?.get(1)}".lowercase()
+                    name = "${commandRegex.find(message.text)?.groupValues?.get(1)}".lowercase()
                 )
             )
         }

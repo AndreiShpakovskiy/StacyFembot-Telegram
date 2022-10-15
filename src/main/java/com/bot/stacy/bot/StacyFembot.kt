@@ -16,7 +16,7 @@ class StacyFembot(
 
     init {
         commandDetector = BotCommandDetector(botUsername, this)
-        commandHandler = MemeCommandHandler(responseMessageObserver = this)
+        commandHandler = BotCommandHandler(responseMessageObserver = this)
     }
 
     override fun getBotToken() = configRepository.botToken
