@@ -2,12 +2,25 @@ package com.bot.stacy.command.handler
 
 import com.bot.stacy.ResponseMessageObserver
 import com.bot.stacy.model.Command
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
 class BotCommandHandler(
     private val responseMessageObserver: ResponseMessageObserver
 ) : CommandHandler {
 
     override fun handleCommand(command: Command) {
-        BotCommandHandlerFactory.getCommandHandler(command, responseMessageObserver).handleCommand(command)
+        try {
+            BotCommandHandlerFactory.getCommandHandler(command, responseMessageObserver).handleCommand(command)
+        } catch (e: Exception) {
+            sendUnsupportedCommandResponse(command)
+        }
+    }
+
+    private fun sendUnsupportedCommandResponse(command: Command) {
+        val responseMessage = SendMessage()
+        responseMessage.chatId = "${command.chatId}"
+        responseMessage.text = "Command \"${command.name}\" is not supported yet"
+
+        responseMessageObserver.onResponsePrepared(responseMessage)
     }
 }
