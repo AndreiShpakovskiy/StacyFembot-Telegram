@@ -52,6 +52,11 @@ class StacyFembot(
 
     override fun onResponsePrepared(message: SendPhoto) {
         println("On new response $message")
-        execute(message)
+
+        try {
+            execute(message)
+        } catch (e: Exception) { // TODO: Specify Exception class more accurately
+            e.printStackTrace()
+        }
     }
 }

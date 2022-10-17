@@ -15,6 +15,7 @@ class GenericCommandHandler(
                 .getCommandHandler(command, responseMessageObserver)
                 .handleCommand(command)
         } catch (e: Exception) {
+            e.printStackTrace()
             sendUnsupportedCommandResponse(command)
         }
     }

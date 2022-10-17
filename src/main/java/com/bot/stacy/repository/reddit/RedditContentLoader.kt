@@ -12,7 +12,7 @@ class RedditContentLoader(private val trackedSubsList: List<String>) {
     private fun updateContent() {
         trackedSubsList.forEach {
             if (RedditStore[it] == null) {
-                RedditStore[it] = mutableListOf()
+                RedditStore[it] = mutableSetOf()
             }
 
             executorService.execute(SingleSubLoader(subredditName = it, destination = RedditStore[it]!!))

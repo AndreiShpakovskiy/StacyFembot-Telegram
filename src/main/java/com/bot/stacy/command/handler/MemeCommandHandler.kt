@@ -18,22 +18,21 @@ class MemeCommandHandler(responseMessageObserver: ResponseMessageObserver) :
     override fun handleCommand(command: Command) {
         sendInitialMessage("${command.chatId}")
 
-        memeRepository.getRandomMeme { meme ->
-            if (meme != null) {
-                val memeMessage = SendPhoto()
-                memeMessage.chatId = "${command.chatId}"
-                memeMessage.photo = InputFile(URL(meme.mediaUrl).openStream(), meme.title)
-                memeMessage.caption = meme.title
+        val meme = memeRepository.getRandomMeme()
+        if (meme != null) {
+            val memeMessage = SendPhoto()
+            memeMessage.chatId = "${command.chatId}"
+            memeMessage.photo = InputFile(URL(meme.mediaUrl).openStream(), meme.title)
+            memeMessage.caption = meme.title
 
-                responseMessageObserver.onResponsePrepared(memeMessage)
-            } else {
-                // TODO: Make it a part of base class functionality
-                val responseMessage = SendMessage()
-                responseMessage.chatId = "${command.chatId}"
-                responseMessage.text = "Couldn't find meme for you, try again"
+            responseMessageObserver.onResponsePrepared(memeMessage)
+        } else {
+            // TODO: Make it a part of base class functionality
+            val responseMessage = SendMessage()
+            responseMessage.chatId = "${command.chatId}"
+            responseMessage.text = "Couldn't find meme for you, try again"
 
-                responseMessageObserver.onResponsePrepared(responseMessage)
-            }
+            responseMessageObserver.onResponsePrepared(responseMessage)
         }
     }
 }

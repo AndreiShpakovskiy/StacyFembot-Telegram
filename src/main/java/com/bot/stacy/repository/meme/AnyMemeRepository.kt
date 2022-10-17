@@ -2,19 +2,17 @@ package com.bot.stacy.repository.meme
 
 import com.bot.stacy.model.Meme
 import com.bot.stacy.repository.reddit.RedditContentRepository
+import com.bot.stacy.repository.reddit.RedditStore
 
 class AnyMemeRepository : MemeRepository {
 
     private val redditRepository = RedditContentRepository()
 
-    // private val memeCollection
+    override fun getRandomMeme(): Meme? {
+        val memePost = redditRepository.getAllPicturePosts(RedditStore.keys.toList()).shuffled().firstOrNull()
 
-    override fun getRandomMeme(onMeme: (Meme?) -> Unit) {
-//        redditRepository.getAllPicturePosts("meme") {
-//            val post = it?.shuffled()?.first()
-//            post?.let {
-//                onMeme(Meme(title = post.title, mediaUrl = post.url!!)) // Post URL is guaranteed to be non-null here
-//            }
-//        }
+        return memePost?.let {
+            Meme(title = memePost.title, mediaUrl = memePost.url!!) // Post URL is guaranteed to be non-null here
+        }
     }
 }

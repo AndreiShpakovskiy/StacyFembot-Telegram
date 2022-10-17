@@ -10,7 +10,7 @@ import java.net.http.HttpResponse
 
 class SingleSubLoader(
     private val subredditName: String,
-    private val destination: MutableList<PostData>
+    private val destination: MutableSet<PostData>
 ) : Runnable {
 
     private val httpClient = HttpClient.newBuilder().build()

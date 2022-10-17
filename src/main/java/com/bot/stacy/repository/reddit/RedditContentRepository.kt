@@ -12,27 +12,11 @@ import kotlin.concurrent.thread
 
 class RedditContentRepository : RedditRepository {
 
-    override fun getAllPicturePosts(subredditNames: List<String>): List<PostData>? {
-//        getSubredditContent(subredditNames) {
-//            val picturePosts = it?.children
-//                ?.filter { post -> !post.data.isVideo && post.data.url != null }
-//                ?.map { post -> post.data }
-//
-//            onPostsRetrieved(picturePosts)
-//        }
-
-        return null
+    override fun getAllPicturePosts(subredditNames: List<String>): List<PostData> {
+        return subredditNames.flatMap { getAllPicturePosts(it) ?: emptyList() }
     }
 
     override fun getAllPicturePosts(subredditName: String): List<PostData>? {
-//        getSubredditContent(subredditName) {
-//            val picturePosts = it?.children
-//                ?.filter { post -> !post.data.isVideo && post.data.url != null }
-//                ?.map { post -> post.data }
-//
-//            onPostsRetrieved(picturePosts)
-//        }
-
-        return null
+        return RedditStore[subredditName]?.filter { post -> !post.isVideo && post.url != null }
     }
 }
