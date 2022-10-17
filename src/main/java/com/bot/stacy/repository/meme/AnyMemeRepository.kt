@@ -7,12 +7,14 @@ class AnyMemeRepository : MemeRepository {
 
     private val redditRepository = RedditContentRepository()
 
-    override fun getRandomMeme(onMeme: (Meme) -> Unit) {
-        redditRepository.getAllPicturePosts("meme") {
-            val post = it?.shuffled()?.first()
-            post?.let {
-                onMeme(Meme(title = post.title, mediaUrl = post.url!!)) // Post URL is guaranteed to be non-null here
-            }
-        }
+    // private val memeCollection
+
+    override fun getRandomMeme(onMeme: (Meme?) -> Unit) {
+//        redditRepository.getAllPicturePosts("meme") {
+//            val post = it?.shuffled()?.first()
+//            post?.let {
+//                onMeme(Meme(title = post.title, mediaUrl = post.url!!)) // Post URL is guaranteed to be non-null here
+//            }
+//        }
     }
 }

@@ -15,5 +15,6 @@ data class Post(
 data class PostData(
     val title: String?,
     val url: String?,
+    val selftext: String?,
     val isVideo: Boolean
 )

@@ -3,7 +3,7 @@ package com.bot.stacy
 import com.bot.stacy.command.detector.BotCommandDetector
 import com.bot.stacy.command.detector.CommandDetector
 import com.bot.stacy.command.detector.CommandListener
-import com.bot.stacy.command.handler.BotCommandHandler
+import com.bot.stacy.command.handler.GenericCommandHandler
 import com.bot.stacy.command.handler.CommandHandler
 import com.bot.stacy.model.Command
 import com.bot.stacy.repository.config.BotConfigRepository
@@ -25,7 +25,7 @@ class StacyFembot(
 
     init {
         commandDetector = BotCommandDetector(botUsername, this)
-        commandHandler = BotCommandHandler(responseMessageObserver = this)
+        commandHandler = GenericCommandHandler(responseMessageObserver = this)
     }
 
     override fun getBotToken() = configRepository.botToken
