@@ -30,7 +30,7 @@ class MemeCommandHandler(responseMessageObserver: ResponseMessageObserver) :
             // TODO: Make it a part of base class functionality
             val responseMessage = SendMessage()
             responseMessage.chatId = "${command.chatId}"
-            responseMessage.text = "Couldn't find meme for you, try again"
+            responseMessage.text = "Couldn't find a meme for you, try again"
 
             responseMessageObserver.onResponsePrepared(responseMessage)
         }
